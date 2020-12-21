@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: iemlav
+Version: 0.1
+Summary: IemlAV
+Home-page: https://github.com/iemaofficial/IEMLabs-Product
+Author: IEMLabs(Development Team)
+Author-email: gouravdutta11@gmail.com
+License: MIT
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Natural Language :: English
+Classifier: Topic :: Software Development :: Version Control :: Git
+Classifier: Topic :: Software Development :: Testing :: Unit
+Requires-Python: >=2.7
+Provides-Extra: server
+Provides-Extra: system

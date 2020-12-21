@@ -1,0 +1,6 @@
+[console_scripts]
+iemlav = iemlav.entry_points.iemlav_core_ep:run_core
+iemlav-iot = iemlav.entry_points.iot_ep:start_iot_process
+iemlav-server = iemlav.entry_points.server_ep:start_server_process
+iemlav-system = iemlav.entry_points.system_ep:start_system_process
+
