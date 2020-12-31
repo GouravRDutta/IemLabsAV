@@ -70,6 +70,7 @@ class FirewallEngine(object):
                                             action_HTTPRequest=self.action_HTTPRequest,
                                             action_protocolRule=self.action_protocolRule,
                                             action_scanLoad=self.action_scanLoad)
+                                            
 
         # Setup Montior object
         self.monitorObj = FirewallMonitor(interface=self.interface,

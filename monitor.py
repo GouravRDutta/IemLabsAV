@@ -412,6 +412,7 @@ def sleep():
         return "404", 404
 
     creds = request.get_json()
+    print(creds)
     args_str = ""
     # AntiVirus parsing
     antivirus = creds['antivirus']
@@ -480,8 +481,10 @@ def sleep():
 
     # Firewall parsing
     firewall = creds['firewall']
+    
     if firewall:
         interface = creds['interface']
+        
         ip_inbound = get_list(creds['ip_inbound'])
         inbound_action = get_integer(creds['inbound_action'])
         ip_outbound = get_list(creds['ip_outbound'])
@@ -543,6 +546,7 @@ def sleep():
         args_str += " --window=" + window
         args_str += " --ip-list=" + ip_list
         args_str += " --status-code=" + status_code
+    print('python3 iemlav.py' + args_str + ' &')
 
     try:
         if not processid:
@@ -571,7 +575,6 @@ def findpid():
             if 'iemlav.py' in cmds:
                 return res['pid']
     return None
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

@@ -5,7 +5,7 @@ import scapy.all as scapy
 from iemlav import logger
 from iemlav.lib.firewall import utils
 from scapy.utils import PcapWriter
-
+from iemlav.lib.osint.osint import OSINT
 
 class PacketFilter(object):
     """Class for PacketFilter."""
@@ -75,6 +75,12 @@ class PacketFilter(object):
         self.pktdump = PcapWriter("blocked.pcap",
                                   append=True,
                                   sync=True)
+        # Initialize OSINT object
+        self.osint_obj = OSINT(debug=debug)
+
+        # Malicious IP file path
+        self._MAL_IP_PATH = "/etc/iemlav/mal_ip.txt"
+
 
     @utils.xnor
     def inbound_IPRule(self, scapy_pkt):
@@ -712,6 +718,30 @@ class PacketFilter(object):
                 return 1
         else:
             return 1
+            
+    def check_mal_ip(self, pkt):
+        """
+        Check whether the source IP of the packet
+        arriving is in the malicious IP list.
+
+        Args:
+            pkt (scapy_object): Packet to filter
+
+        Raises:
+            None
+
+        Returns:
+            bool (int): Allow or drop
+        """
+        ip_list = utils.open_file(self._MAL_IP_PATH)
+        source_ip = pkt[scapy.IP].src
+        source_ip = source_ip.strip(" ")
+
+        for ip in ip_list:
+            ip = ip.strip(" ").strip("\n")
+            if source_ip == ip:
+                return 0
+        return 1
 
     def process(self, pkt):
         """
@@ -748,7 +778,8 @@ class PacketFilter(object):
             self.syn_fragmentation_attack(scapy_pkt) and
             self.check_fin_ack(scapy_pkt) and
             self.check_tcp_flag(scapy_pkt) and
-            self.check_network_congestion(scapy_pkt)):
+            self.check_network_congestion(scapy_pkt) and
+            self.check_mal_ip(scapy_pkt)):
             return 1
         else:
             self.logger.log(
@@ -757,4 +788,7 @@ class PacketFilter(object):
             )
             # PCAP dumping of rejected packets
             self.pktdump.write(scapy_pkt)
+            src_ip = scapy_pkt[scapy.IP].src
+            src_ip = src_ip.strip(" ")
+            self.osint_obj.perform_osint_scan(src_ip)
             return 0

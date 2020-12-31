@@ -245,6 +245,7 @@ def get_interface():
     resp = excecute_command('ifconfig')
 
     output = resp[0]
+    
     interfaces = re.findall('(.*): ', output)
 
     total_index = 0
@@ -257,11 +258,15 @@ def get_interface():
         print(index, ' '.ljust(5), ' | ', interface.ljust(11, ' '), '|')
         total_index = total_index + 1
         print('-' * 25)
-
+        
     intf = -1
-    while intf > total_index or intf < 0:
-        intf = int(input('\n>> Enter the index of the interface: ')
-                   .strip())
+    try:
+        while intf > total_index or intf < 0:
+            intf = int(input('\n>> Enter the index of the interface: ').strip())
+    except EOFError:
+        intf=0
+    	
+    
 
     utils_logger.log(
         "Selected interface is : {}".format(interfaces[intf]),
@@ -269,3 +274,23 @@ def get_interface():
     )
 
     return interfaces[intf]
+    
+    
+def open_file(file_path):
+    """
+    Open file and return the contents as a list.
+
+    Args:
+        file_path (str): Path of the file
+
+    Raises:
+        None
+
+    Returns:
+        TYPE: list
+    """
+    try:
+        with open(file_path, "r") as rf:
+            return rf.readlines()
+    except FileNotFoundError:
+        return []
