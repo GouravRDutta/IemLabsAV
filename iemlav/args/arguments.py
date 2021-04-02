@@ -31,6 +31,7 @@ def get_args():
     
     parser.add_argument(
         '--interface',
+        type=str,
         required=False,
         help='Name of the interface'
     )
