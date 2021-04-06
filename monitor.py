@@ -511,7 +511,7 @@ def sleep():
             time_ub = "23:59"
 
         if interface:
-            args_str += " --interface=" + interface
+            args_str += " --interface=" + interface.strip()
 
         args_str += " --inbound_IP_list=" + ip_inbound
         args_str += " --inbound_IP_action=" + inbound_action
